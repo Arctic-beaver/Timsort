@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lab_1_lineal
+namespace Timsort
 {
     public class ListClass
     {
@@ -60,7 +60,7 @@ namespace Lab_1_lineal
             return shovel;
         }
 
-        public string GetDataOnPos(int position)
+        public Structure GetDataOnPos(int position)
         {
             Node shovel = head;
             for (int i = 0; i <= position; i++)
@@ -70,7 +70,7 @@ namespace Lab_1_lineal
             return shovel.Data;
         }
 
-        public int Find(string element)
+       /* public int Find(string element)
         {
             int position = 0;
 
@@ -83,9 +83,9 @@ namespace Lab_1_lineal
             }
             //if we don't have such an element
             return -1;
-        }
+        }*/
 
-        public void CreateNode(Node previous, string data, bool is_end)
+        public void CreateNode(Node previous, Structure data, bool is_end)
         {
             //to the end or center
             Node new_node = new Node();
@@ -98,7 +98,7 @@ namespace Lab_1_lineal
             previous.Next = new_node;
         }
 
-        public void CreateNode(string data)
+        public void CreateNode(Structure data)
         {
             //to head
             Node new_node = new Node();
@@ -112,7 +112,7 @@ namespace Lab_1_lineal
             head.Next = new_node;
         }
 
-        public void Add(string data, int position)
+        public void Add(Structure data, int position)
         {
             if (position == 0)
             {
@@ -143,7 +143,7 @@ namespace Lab_1_lineal
             amount_of_nodes -= 1;
         }
         
-        void Free()
+        public void Free()
         {
             head = null;
             amount_of_nodes = 0;

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lab_1_lineal
+namespace Timsort
 {
     public class Node
     {
-        public string Data { get; set; }
+        public Structure Data;
         public Node Next { get; set; }
     }
 }

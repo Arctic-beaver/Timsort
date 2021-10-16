@@ -1,12 +1,13 @@
 ﻿using System;
 
-namespace TimsortClass
+namespace Timsort
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            TimsortClass timsort = new TimsortClass(30);
+            timsort.Test();
         }
     }
 }

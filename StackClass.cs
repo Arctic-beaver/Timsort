@@ -4,35 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lab_1_lineal
+namespace Timsort
 {
     class StackClass
     {
         public ListClass list = new ListClass();
 
-        public void Push(string data)
+        public void Push(Structure data)
         {
             list.Add(data, list.GetAmountOfNodes());
         }
 
 
-        public string Pop ()
+        public Structure Pop()
         {
-            string result = list.GetDataOnPos(list.GetAmountOfNodes() - 1);
+            Structure result = list.GetDataOnPos(list.GetAmountOfNodes() - 1);
             list.Delete(list.GetAmountOfNodes() - 1);
             return result;
         }
 
-        public string Peek()
+        public Structure Peek()
         {
              return list.GetDataOnPos(list.GetAmountOfNodes() - 1);
         }
 
-        public bool Contains(string data)
+        /*public bool Contains(string data)
         {
             if (list.Find(data) != -1) return true;
             else return false;
-        }
+        }*/
 
         public int AmountOfEl()
         {
@@ -42,7 +42,7 @@ namespace Lab_1_lineal
         
         public void Finish()
         {
-            list.Dispose();
+            list.Free();
         }
     }
 }
