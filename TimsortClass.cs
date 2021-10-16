@@ -119,8 +119,8 @@ namespace Timsort
                     if (_array[pointer] > _array[pointer + 1]) isAscending = false;
                     int index = pointer;
 
-                    while ((_array[index] < _array[index + 1] && isAscending) ||
-                        (_array[index] > _array[index + 1] && !isAscending))
+                    while (((_array[index] <= _array[index + 1]) && isAscending) ||
+                        ((_array[index] >= _array[index + 1]) && !isAscending))
                     {
                         run += 1;
                         index += 1;
@@ -165,7 +165,7 @@ namespace Timsort
                         X = stack.Pop();
                         Y = stack.Pop();
 
-                        if (X.GetLength() > Y.GetLength())
+                        if (X.GetLength() >= Y.GetLength())
                         {
                             X = Merge(Y, X);
                             stack.Push(X);
@@ -182,7 +182,7 @@ namespace Timsort
                         Y = stack.Pop();
                         Z = stack.Pop();
 
-                        if (X.GetLength() > Y.GetLength() || Z.GetLength() < (X.GetLength() + Y.GetLength()))
+                        if (X.GetLength() >= Y.GetLength() || Z.GetLength() <= (X.GetLength() + Y.GetLength()))
                         {
                             if (X.GetLength() <= Z.GetLength())
                             {
@@ -199,19 +199,24 @@ namespace Timsort
                         }
                         else
                         {
+                            stack.Push(Z);
                             stack.Push(Y);
                             stack.Push(X);
-                            stack.Push(Z);
                             stop = true;
                         }
                         break;
                 }
             }
         }
+        
 
         private Structure Merge(Structure Y, Structure X)
         {
-            Structure new_structure = new Structure(Y.GetIndex(), Y.GetLength() + X.GetLength());
+            int index;
+            if (Y.GetIndex() < X.GetIndex()) index = Y.GetIndex();
+            else index = X.GetIndex();
+            Structure new_structure = new Structure(index, Y.GetLength() + X.GetLength());
+
             int lenLeft = Y.GetLength();
             int[] left = new int[lenLeft];
             int lenRight = X.GetLength();
@@ -223,25 +228,15 @@ namespace Timsort
             int j = 0;
             int k = 0;
 
-            //Console.WriteLine();
-            //Console.Write("left: ");
-            for (i = Y.GetIndex(), j = 0; i < Y.GetIndex() + lenLeft; j ++, i++)
+            for (i = Y.GetIndex(), j = 0; i < Y.GetIndex() + lenLeft; j++, i++)
             {
                 left[j] = _array[i];
-                //Console.Write($"{left[j]} ");
             }
-            //Console.WriteLine();
-            //Console.WriteLine();
-            //Console.Write("right: ");
 
             for (i = X.GetIndex(), j = 0; i < X.GetIndex() + lenRight; j++, i++)
             {
                 right[j] = _array[i];
-                //Console.Write($"{right[j]} ");
             }
-            //Console.WriteLine();
-            //Console.WriteLine();
-            //Console.Write("Result: ");
 
             i = 0;
             j = 0;
@@ -258,11 +253,8 @@ namespace Timsort
                     result[k] = right[j];
                     j++;
                 }
-                //Console.Write($"{result[k]} ");
                 k++;
             }
-            //Console.WriteLine();
-            //Console.WriteLine();
 
             // Copy remaining elements
             // of left, if any
@@ -281,13 +273,12 @@ namespace Timsort
                 k++;
                 j++;
             }
-
             //combine result and _array
-            for (i = Y.GetIndex(), k = 0; i < lenRight + lenLeft; k++, i++)
+            for (i = 0, k = index; i < result.Length; i++, k++)
             {
-                _array[i] = result[k];
+                _array[k] = result[i];
             }
-
+           
             return new_structure;
         }
 
