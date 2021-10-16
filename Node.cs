@@ -8,7 +8,7 @@ namespace Timsort
 {
     public class Node
     {
-        public Structure Data;
+        public Structure Data { get; set; }
         public Node Next { get; set; }
     }
 }
