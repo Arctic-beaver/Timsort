@@ -208,7 +208,31 @@ namespace Timsort
                 }
             }
         }
-        
+
+        private void GallopingMode(int[] bigger, int[] smaller, int[] result, int i, ref int j, ref int k)
+        {
+            int trialJ = j;
+            int realJ = j;
+            int pow = 1;
+            while (smaller[trialJ] < bigger[i])
+            {
+                realJ = trialJ;
+                trialJ += (int)Math.Pow(2, pow);
+                pow += 1;
+            }
+
+            if (j != realJ)
+            {
+                for (int counter = j; counter <= realJ; counter++)
+                {
+                    result[k] = smaller[counter];
+                    k++;
+                    Console.WriteLine($" {smaller[counter]}, {counter} ");
+                }
+                j = realJ;
+                j++;
+            }
+        }
 
         private Structure Merge(Structure Y, Structure X)
         {
@@ -241,19 +265,37 @@ namespace Timsort
             i = 0;
             j = 0;
             k = 0;
+            int colElFromRight = 0;
+            int colElFromLeft = 0;
             while (i < lenLeft && j < lenRight)
             {
                 if (left[i] <= right[j])
                 {
+                    colElFromLeft += 1;
+                    colElFromRight = 0;
                     result[k] = left[i];
                     i++;
                 }
                 else
                 {
+                    colElFromRight += 1;
+                    colElFromLeft = 0;
                     result[k] = right[j];
                     j++;
                 }
                 k++;
+
+
+                //galloping mode
+
+                if (colElFromRight == 7)
+                {
+                    GallopingMode(left, right, result, i, ref j, ref k);
+                }
+                else if (colElFromLeft == 7)
+                {
+                    GallopingMode(right, left, result, j, ref i, ref k);
+                }
             }
 
             // Copy remaining elements
