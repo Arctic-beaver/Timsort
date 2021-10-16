@@ -61,6 +61,45 @@ namespace Timsort
 
         }
 
+        private void Insert(int element, int position, int indexRight)
+        {
+            for (int i = indexRight + 1; i > position; i++)
+            {
+                _array[i] = _array[i - 1];
+            }
+            _array[position] = element;
+        }
+
+        private void BinarySearch(int indexLeft, int indexRight, int element, bool isAscending)
+        {
+            int left = indexLeft;
+            int right = indexRight;
+            while (left <= right)
+            {
+                int middle = (left + right) / 2;
+                
+                if ((_array[middle] < element && element < _array[middle + 1] && isAscending) ||
+                    (_array[middle] > element && element > _array[middle + 1] && !isAscending))//вставляем элемент
+                {
+                    Insert(element, middle + 1, indexRight);
+                    return;
+                }
+                
+                if ((_array[middle] < element && element > _array[middle + 1] && isAscending) ||
+                    (_array[middle] > element && element < _array[middle + 1] && !isAscending))
+                {
+                    left += 1;
+                }
+
+                if ((_array[middle] > element && isAscending)||
+                    (_array[middle] < element && !isAscending))
+                {
+                    if (middle == indexLeft) Insert(element, indexLeft, indexRight);
+                    right -= 1;
+                }
+            }
+        }
+
         /// <summary>
         /// Число minrun - минимальный размер упорядоченной последовательности.
         /// </summary>
