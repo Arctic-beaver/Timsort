@@ -72,6 +72,8 @@ namespace Timsort
        
         private void InsertSort(int indexLeft, int indexRight)
         {
+            //Console.WriteLine();
+           //Console.WriteLine($"ind left: {indexLeft} ind right: {indexRight}");
             for (int i = indexLeft; i <= indexRight; i++)
             {
                 int key = _array[i];
@@ -83,6 +85,14 @@ namespace Timsort
                 }
                 _array[j] = key;
             }
+            //Console.WriteLine();
+           // Console.WriteLine("Sorted Array: ");
+            //for (int i = indexLeft; i <= indexRight; i++)
+            //{
+           //     Console.Write(_array[i]);
+           // }
+           // Console.WriteLine();
+            //Console.WriteLine();
         }
 
         private void ReverseArray(int indexLeft, int indexRight)
@@ -98,10 +108,11 @@ namespace Timsort
         {
             int pointer = 0;
             bool isAscending = true;
-            int run = 1;
+            int run;
             StackClass stack = new StackClass();
             while (pointer < _array.Length)
             {
+                run = 1;
                 if (pointer != _array.Length - 1)
                 {
 
@@ -112,6 +123,7 @@ namespace Timsort
                         (_array[index] > _array[index + 1] && !isAscending))
                     {
                         run += 1;
+                        index += 1;
                     }
 
                     if (!isAscending)
@@ -119,16 +131,17 @@ namespace Timsort
                         ReverseArray(pointer, pointer + run - 1);
                     }
 
-                    if (run < minRun)
+                    if (run < minRun && (pointer + minRun <= _array.Length))
                     {
-                        InsertSort(pointer, minRun);
+                        InsertSort(pointer, pointer + minRun - 1);
                         run = minRun;
                     }
                 }
                 //put in stack
                 Structure data = new Structure(pointer, run);
                 stack.Push(data);
-                pointer = pointer + run;
+
+                pointer += run;
 
                 MergeDecision(stack);
             }
@@ -210,16 +223,29 @@ namespace Timsort
             int j = 0;
             int k = 0;
 
+            //Console.WriteLine();
+            //Console.Write("left: ");
             for (i = Y.GetIndex(), j = 0; i < Y.GetIndex() + lenLeft; j ++, i++)
             {
                 left[j] = _array[i];
+                //Console.Write($"{left[j]} ");
             }
+            //Console.WriteLine();
+            //Console.WriteLine();
+            //Console.Write("right: ");
 
             for (i = X.GetIndex(), j = 0; i < X.GetIndex() + lenRight; j++, i++)
             {
                 right[j] = _array[i];
+                //Console.Write($"{right[j]} ");
             }
+            //Console.WriteLine();
+            //Console.WriteLine();
+            //Console.Write("Result: ");
 
+            i = 0;
+            j = 0;
+            k = 0;
             while (i < lenLeft && j < lenRight)
             {
                 if (left[i] <= right[j])
@@ -232,8 +258,11 @@ namespace Timsort
                     result[k] = right[j];
                     j++;
                 }
+                //Console.Write($"{result[k]} ");
                 k++;
             }
+            //Console.WriteLine();
+            //Console.WriteLine();
 
             // Copy remaining elements
             // of left, if any
@@ -270,7 +299,7 @@ namespace Timsort
         {
             int length = _array.Length;
             int r = 0;           /* станет 1 если среди сдвинутых битов будет хотя бы 1 ненулевой */
-            while (_array.Length >= 64) //Оптимальная величина для N / minrun это степень числа 2 (или близким к нему).
+            while (length >= 64) //Оптимальная величина для N / minrun это степень числа 2 (или близким к нему).
                                       //наиболее эффективно использовать значения из диапазона (32;65)
             {
                 r |= length & 1;

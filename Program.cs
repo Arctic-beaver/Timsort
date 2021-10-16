@@ -6,7 +6,7 @@ namespace Timsort
     {
         static void Main(string[] args)
         {
-            TimsortClass timsort = new TimsortClass(30);
+            TimsortClass timsort = new TimsortClass(200);
             timsort.Sort();
         }
     }
